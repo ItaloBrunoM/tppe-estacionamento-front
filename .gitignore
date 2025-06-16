@@ -1,0 +1,58 @@
+# Arquivos de log
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependências
+node_modules
+
+# Pastas de build e artefatos de produção
+dist
+dist-ssr
+build
+
+# Cache de ferramentas
+.vite/
+.temp/
+.cache/
+
+# Arquivos de ambiente local - NUNCA versionar!
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.production.local
+*.local
+
+# Artefatos de teste
+coverage/
+
+# Arquivos de configuração de IDEs e editores
+.idea/
+.vscode/*
+# A linha abaixo é uma exceção para manter as extensões recomendadas
+!.vscode/extensions.json
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+# Arquivos de projetos Visual Studio e de editores
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# Arquivos temporários
+*.tmp
