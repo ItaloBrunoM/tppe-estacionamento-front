@@ -72,7 +72,7 @@ Existem duas formas de executar os testes:
 Este comando abrirá o Cypress Test Runner, onde você pode ver os testes rodando em um navegador e interagir com eles.
 
 ```bash
-npm run cy:open
+npx cypress open
 ```
 
 2. **Em modo headless (sem interface gráfica):**
@@ -80,5 +80,5 @@ npm run cy:open
 Este comando executará todos os testes em um terminal, sem abrir a interface do navegador. É ideal para integração contínua (CI).
 
 ```bash
-npm run test:e2e
+npx cypress run
 ```
