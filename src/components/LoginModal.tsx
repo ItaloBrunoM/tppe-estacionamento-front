@@ -16,20 +16,14 @@ export function LoginModal({ onClose }: LoginModalProps) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
     try {
-      const response = await api.post('/token', new URLSearchParams({
-        username,
-        password,
-      }));
-
+      const response = await api.post('/token', new URLSearchParams({ username, password }));
       if (response.data.access_token) {
         login(response.data.access_token);
         onClose();
       }
     } catch (err) {
       setError('Usuário ou senha inválidos.');
-      console.error(err);
     }
   };
 
@@ -43,6 +37,7 @@ export function LoginModal({ onClose }: LoginModalProps) {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            placeholder="Digite seu usuário"
             required
           />
 
@@ -51,6 +46,7 @@ export function LoginModal({ onClose }: LoginModalProps) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Digite sua senha"
             required
           />
 
