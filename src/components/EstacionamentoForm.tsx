@@ -24,7 +24,7 @@ export function EstacionamentoForm({
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
-  
+
     if (
       !nome.trim() ||
       !endereco.trim() ||
@@ -37,7 +37,7 @@ export function EstacionamentoForm({
       setIsSubmitting(false);
       return;
     }
-  
+
     const data = {
       nome,
       endereco,
@@ -46,7 +46,7 @@ export function EstacionamentoForm({
       valor_demais_horas: parseFloat(valorDemaisHoras),
       valor_diaria: parseFloat(valorDiaria),
     };
-  
+
     try {
       await api.post("/estacionamentos/", data);
       onSuccess();
@@ -57,7 +57,6 @@ export function EstacionamentoForm({
       setIsSubmitting(false);
     }
   };
-  
 
   return (
     <div className="modal-overlay">

@@ -41,7 +41,9 @@ function PublicLayout() {
         <h1>Estacionamento TOP</h1>
         <p>Por favor, faça o login para acessar o sistema.</p>
       </main>
-      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
+      {isLoginModalOpen && (
+        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+      )}
     </div>
   );
 }
@@ -70,7 +72,9 @@ function ProtectedLayout() {
     <div className="app-layout">
       {/* A Sidebar não precisa mais de props de usuário */}
       <Sidebar isVisible={isSidebarVisible} />
-      <div className={`main-container ${isSidebarVisible ? 'main-container-shifted' : ''}`}>
+      <div
+        className={`main-container ${isSidebarVisible ? "main-container-shifted" : ""}`}
+      >
         <Topbar title={currentPageTitle} onMenuClick={toggleSidebar} />
         <main className="content-area">
           <Routes>

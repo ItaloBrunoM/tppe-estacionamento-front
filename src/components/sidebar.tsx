@@ -1,26 +1,23 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { LogoutModal } from './LogoutModal';
-import { FiLogOut } from 'react-icons/fi'; // Importa o ícone de logout
-import './sidebar.css';
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { LogoutModal } from "./LogoutModal";
+import { FiLogOut } from "react-icons/fi";
+import "./sidebar.css";
 
-// A interface agora só espera a prop 'isVisible'
 interface SidebarProps {
   isVisible: boolean;
 }
 
 export function Sidebar({ isVisible }: SidebarProps) {
-  // Pega o usuário e a função de logout diretamente do contexto
-  const { user, logout } = useAuth(); 
-  
+  const { user, logout } = useAuth();
   const [showLogoutOption, setShowLogoutOption] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const getLinkClass = ({ isActive }: { isActive: boolean }) => 
-    isActive ? 'sidebar-link active' : 'sidebar-link';
+  const getLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? "sidebar-link active" : "sidebar-link";
 
-  const sidebarClassName = isVisible ? 'sidebar' : 'sidebar collapsed';
+  const sidebarClassName = isVisible ? "sidebar" : "sidebar collapsed";
 
   const handleUserClick = () => {
     setShowLogoutOption(!showLogoutOption);
@@ -35,9 +32,9 @@ export function Sidebar({ isVisible }: SidebarProps) {
     logout();
     setShowLogoutModal(false);
   };
-  
+
   if (!user) {
-    return null; 
+    return null;
   }
 
   return (
@@ -50,7 +47,7 @@ export function Sidebar({ isVisible }: SidebarProps) {
           <NavLink to="/" end className={getLinkClass}>
             VISÃO GERAL
           </NavLink>
-          {user.role === 'admin' && (
+          {user.role === "admin" && (
             <NavLink to="/estacionamentos" className={getLinkClass}>
               ESTACIONAMENTO
             </NavLink>
@@ -59,13 +56,16 @@ export function Sidebar({ isVisible }: SidebarProps) {
         </div>
         <div className="sidebar-footer">
           <button className="user-profile-button" onClick={handleUserClick}>
-            <div className="user-name">{user.name}</div> 
+            <div className="user-name">{user.name}</div>
             <div className="user-role">{user.role}</div>
           </button>
-          
+
           {showLogoutOption && (
             <div className="logout-popup">
-              <button className="logout-option-button" onClick={handleLogoutClick}>
+              <button
+                className="logout-option-button"
+                onClick={handleLogoutClick}
+              >
                 <FiLogOut /> Sair
               </button>
             </div>
@@ -74,9 +74,9 @@ export function Sidebar({ isVisible }: SidebarProps) {
       </nav>
 
       {showLogoutModal && (
-        <LogoutModal 
-          onConfirm={handleConfirmLogout} 
-          onCancel={() => setShowLogoutModal(false)} 
+        <LogoutModal
+          onConfirm={handleConfirmLogout}
+          onCancel={() => setShowLogoutModal(false)}
         />
       )}
     </>

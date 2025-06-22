@@ -1,29 +1,32 @@
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import api from './api';
-import './LoginModal.css';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import api from "./api";
+import "./LoginModal.css";
 
 interface LoginModalProps {
   onClose: () => void;
 }
 
 export function LoginModal({ onClose }: LoginModalProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     try {
-      const response = await api.post('/token', new URLSearchParams({ username, password }));
+      const response = await api.post(
+        "/token",
+        new URLSearchParams({ username, password })
+      );
       if (response.data.access_token) {
         login(response.data.access_token);
         onClose();
       }
     } catch (err) {
-      setError('Usuário ou senha inválidos.');
+      setError("Usuário ou senha inválidos.");
     }
   };
 
@@ -52,7 +55,9 @@ export function LoginModal({ onClose }: LoginModalProps) {
 
           {error && <p className="error-message">{error}</p>}
 
-          <button type="submit" className="btn-entrar">ENTRAR</button>
+          <button type="submit" className="btn-entrar">
+            ENTRAR
+          </button>
         </form>
       </div>
     </div>

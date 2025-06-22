@@ -1,4 +1,4 @@
-import './LogoutModal.css';
+import "./LogoutModal.css";
 
 interface LogoutModalProps {
   onConfirm: () => void;
@@ -8,7 +8,10 @@ interface LogoutModalProps {
 export function LogoutModal({ onConfirm, onCancel }: LogoutModalProps) {
   return (
     <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal-content-logout" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="modal-content-logout"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h4>Tem certeza que deseja sair?</h4>
         <div className="logout-actions">
           <button onClick={onCancel} className="btn-cancelar-logout">

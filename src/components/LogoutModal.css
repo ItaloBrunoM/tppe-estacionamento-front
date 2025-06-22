@@ -13,12 +13,12 @@
 
 /* Alteramos a cor de fundo para combinar com a sidebar */
 .modal-content-logout {
-  background-color: #2c3e50; 
+  background-color: #2c3e50;
   padding: 25px 30px;
   border-radius: 8px;
   text-align: center;
   color: #ecf0f1; /* Cor de texto clara para contraste */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   animation: slide-down 0.3s ease-out;
   border: 1px solid #34495e; /* Borda sutil */
 }
@@ -58,7 +58,7 @@
 
 .logout-actions button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-cancelar-logout {

@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("accessToken");
     setUser(null);
     setIsAuthenticated(false);
-    window.location.href = "/"; // Redireciona para a home pública
+    window.location.href = "/";
   };
 
   return (

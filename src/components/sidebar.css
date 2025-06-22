@@ -8,7 +8,10 @@
   color: #ecf0f1;
   padding: 20px;
   box-sizing: border-box;
-  transition: min-width 0.3s ease-out, width 0.3s ease-out, padding 0.3s ease-out;
+  transition:
+    min-width 0.3s ease-out,
+    width 0.3s ease-out,
+    padding 0.3s ease-out;
 }
 
 .sidebar.collapsed {
@@ -42,7 +45,9 @@
   border-radius: 4px;
   margin-bottom: 10px;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .sidebar-link:hover {
@@ -112,5 +117,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* Espaço entre o ícone e o texto */
+  gap: 8px;
 }
