@@ -24,22 +24,29 @@ export function EstacionamentoForm({
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
-
-    if (!nome || !totalVagas) {
-      setError("Nome e Capacidade são obrigatórios.");
+  
+    if (
+      !nome.trim() ||
+      !endereco.trim() ||
+      !totalVagas.trim() ||
+      !valorPrimeiraHora.trim() ||
+      !valorDemaisHoras.trim() ||
+      !valorDiaria.trim()
+    ) {
+      setError("Todos os campos são obrigatórios.");
       setIsSubmitting(false);
       return;
     }
-
+  
     const data = {
       nome,
       endereco,
       total_vagas: parseInt(totalVagas, 10),
-      valor_primeira_hora: parseFloat(valorPrimeiraHora) || null,
-      valor_demais_horas: parseFloat(valorDemaisHoras) || null,
-      valor_diaria: parseFloat(valorDiaria) || null,
+      valor_primeira_hora: parseFloat(valorPrimeiraHora),
+      valor_demais_horas: parseFloat(valorDemaisHoras),
+      valor_diaria: parseFloat(valorDiaria),
     };
-
+  
     try {
       await api.post("/estacionamentos/", data);
       onSuccess();
@@ -50,6 +57,7 @@ export function EstacionamentoForm({
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="modal-overlay">
@@ -62,6 +70,7 @@ export function EstacionamentoForm({
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Ex: EasyPark"
+            required
           />
 
           <label>Endereço</label>
@@ -70,6 +79,7 @@ export function EstacionamentoForm({
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Ex: AV. 123, numero 23"
+            required
           />
 
           <label>Capacidade</label>
@@ -78,6 +88,7 @@ export function EstacionamentoForm({
             value={totalVagas}
             onChange={(e) => setTotalVagas(e.target.value)}
             placeholder="Ex: 123"
+            required
           />
 
           <label>Valor por Primeira Hora (R$)</label>
@@ -87,6 +98,7 @@ export function EstacionamentoForm({
             value={valorPrimeiraHora}
             onChange={(e) => setValorPrimeiraHora(e.target.value)}
             placeholder="Ex: 15.00"
+            required
           />
 
           <label>Valor por Demais Horas (R$)</label>
@@ -96,6 +108,7 @@ export function EstacionamentoForm({
             value={valorDemaisHoras}
             onChange={(e) => setValorDemaisHoras(e.target.value)}
             placeholder="Ex: 5.00"
+            required
           />
 
           <label>Valor da Diária (R$)</label>
@@ -105,6 +118,7 @@ export function EstacionamentoForm({
             value={valorDiaria}
             onChange={(e) => setValorDiaria(e.target.value)}
             placeholder="Ex: 35.00"
+            required
           />
 
           {error && <p className="error-message">{error}</p>}

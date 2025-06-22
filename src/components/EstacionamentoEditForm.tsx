@@ -93,6 +93,7 @@ export function EstacionamentoEditForm({
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Ex: AV. 123, numero 23"
+            required
           />
 
           <label htmlFor="total_vagas">Capacidade</label>
@@ -115,6 +116,7 @@ export function EstacionamentoEditForm({
             value={valorPrimeiraHora}
             onChange={(e) => setValorPrimeiraHora(e.target.value)}
             placeholder="Ex: 15.00"
+            required
           />
 
           <label htmlFor="valor_demais_horas">
@@ -127,6 +129,7 @@ export function EstacionamentoEditForm({
             value={valorDemaisHoras}
             onChange={(e) => setValorDemaisHoras(e.target.value)}
             placeholder="Ex: 5.00"
+            required
           />
 
           <label htmlFor="valor_diaria">Valor da Diária (R$)</label>
@@ -137,6 +140,7 @@ export function EstacionamentoEditForm({
             value={valorDiaria}
             onChange={(e) => setValorDiaria(e.target.value)}
             placeholder="Ex: 35.00"
+            required
           />
 
           {error && <p className="error-message">{error}</p>}
