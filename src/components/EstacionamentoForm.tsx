@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "./api";
 import "./EstacionamentoForm.css";
 
+// Interface para as propriedades que o componente recebe
 interface EstacionamentoFormProps {
   onClose: () => void;
   onSuccess: () => void;
@@ -11,6 +12,7 @@ export function EstacionamentoForm({
   onClose,
   onSuccess,
 }: EstacionamentoFormProps) {
+  // Estados para cada campo do formulário
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
   const [totalVagas, setTotalVagas] = useState("");
@@ -42,16 +44,20 @@ export function EstacionamentoForm({
       nome,
       endereco,
       total_vagas: parseInt(totalVagas, 10),
-      valor_primeira_hora: parseFloat(valorPrimeiraHora),
-      valor_demais_horas: parseFloat(valorDemaisHoras),
-      valor_diaria: parseFloat(valorDiaria),
+      valor_primeira_hora: parseFloat(valorPrimeiraHora) || null,
+      valor_demais_horas: parseFloat(valorDemaisHoras) || null,
+      valor_diaria: parseFloat(valorDiaria) || null,
     };
 
     try {
       await api.post("/estacionamentos/", data);
-      onSuccess();
-    } catch (err) {
-      setError("Erro ao criar o estacionamento. Tente novamente.");
+      onSuccess(); 
+    } catch (err: any) {
+      if (err.response && err.response.status === 409) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Erro ao criar o estacionamento. Tente novamente.");
+      }
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -78,7 +84,6 @@ export function EstacionamentoForm({
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Ex: AV. 123, numero 23"
-            required
           />
 
           <label>Capacidade</label>
@@ -97,7 +102,6 @@ export function EstacionamentoForm({
             value={valorPrimeiraHora}
             onChange={(e) => setValorPrimeiraHora(e.target.value)}
             placeholder="Ex: 15.00"
-            required
           />
 
           <label>Valor por Demais Horas (R$)</label>
@@ -107,7 +111,6 @@ export function EstacionamentoForm({
             value={valorDemaisHoras}
             onChange={(e) => setValorDemaisHoras(e.target.value)}
             placeholder="Ex: 5.00"
-            required
           />
 
           <label>Valor da Diária (R$)</label>
@@ -117,7 +120,6 @@ export function EstacionamentoForm({
             value={valorDiaria}
             onChange={(e) => setValorDiaria(e.target.value)}
             placeholder="Ex: 35.00"
-            required
           />
 
           {error && <p className="error-message">{error}</p>}
