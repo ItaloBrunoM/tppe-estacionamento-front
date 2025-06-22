@@ -1,23 +1,28 @@
 import "./topbar.css";
 
-interface TopBarProps {
+interface TopbarProps {
   title: string;
-  onMenuClick: () => void;
+  onLoginClick: () => void;
+  onMenuClick?: () => void;
 }
 
-export function TopBar({ title, onMenuClick }: TopBarProps) {
+export function Topbar({ title, onLoginClick, onMenuClick }: TopbarProps) {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
-        <button className="menu-button" onClick={onMenuClick}>
+        {/* O botão de menu agora chama onMenuClick se fornecido, senão onLoginClick */}
+        <button className="menu-button" onClick={onMenuClick || onLoginClick}>
           ☰
-        </button>{" "}
+        </button>
         <h1 className="page-title">{title}</h1>
       </div>
       <div className="top-bar-right">
         <div className="user-profile">
           <span className="user-icon">👤</span>
-          <button className="login-button">Entrar</button>
+          {/* Adicionamos a mesma função de clique ao botão "Entrar" */}
+          <button className="login-button" onClick={onLoginClick}>
+            Entrar
+          </button>
         </div>
       </div>
     </header>

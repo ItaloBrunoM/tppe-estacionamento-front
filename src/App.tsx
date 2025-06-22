@@ -4,17 +4,42 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { Sidebar } from "./components/sidebar";
-import { TopBar } from "./components/topbar";
+import { Topbar } from "./components/topbar";
 import { EstacionamentoPage } from "./pages/EstacionamentoPage";
+import { LoginModal } from "./components/LoginModal";
 import "./App.css";
 
-function DashboardPage() {
-  return <div>Bem-vindo à Visão Geral!</div>;
+function PublicApp() {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  return (
+    <div className="app-layout">
+      <div className="main-container">
+        {/* Usamos a nova e mais clara propriedade 'onLoginClick' */}
+        <Topbar
+          title="Bem-vindo"
+          onLoginClick={() => setIsLoginModalOpen(true)}
+        />
+        <main
+          className="content-area"
+          style={{ textAlign: "center", paddingTop: "100px" }}
+        >
+          <h1>Estacionamento TOP</h1>
+          <p>Por favor, faça o login para continuar.</p>
+        </main>
+        {isLoginModalOpen && (
+          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+        )}
+      </div>
+    </div>
+  );
 }
 
-function PageLayout() {
+function ProtectedLayout() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const location = useLocation();
   let currentPageTitle = "Visão Geral";
@@ -30,9 +55,6 @@ function PageLayout() {
     case "/":
       currentPageTitle = "Visão Geral";
       break;
-    default:
-      currentPageTitle = "Página Não Encontrada";
-      break;
   }
 
   const loggedUser = {
@@ -41,21 +63,26 @@ function PageLayout() {
   };
 
   return (
-    <div className="app-container">
-      <TopBar title={currentPageTitle} onMenuClick={toggleSidebar} />
-
-      <div className="content-wrapper">
-        <Sidebar
-          userName={loggedUser.name}
-          userRole={loggedUser.role}
-          isVisible={isSidebarVisible}
+    <div className="app-layout">
+      <Sidebar
+        userName={loggedUser.name}
+        userRole={loggedUser.role}
+        isVisible={isSidebarVisible}
+      />
+      <div
+        className={`main-container ${!isSidebarVisible ? "no-sidebar" : ""}`}
+      >
+        <Topbar
+          title={currentPageTitle}
+          onLoginClick={() => {}}
+          onMenuClick={toggleSidebar}
         />
-        <main
-          className={`content-area ${isSidebarVisible ? "content-area-shifted" : ""}`}
-        >
+        <main className="content-area">
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
+            {/* Se acessar uma rota inexistente, volta para a home */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
       </div>
@@ -63,11 +90,37 @@ function PageLayout() {
   );
 }
 
+function DashboardPage() {
+  return <div>Bem-vindo à Visão Geral!</div>;
+}
+
+function AppRoutes() {
+  const { isAuthenticated } = useAuth();
+  return (
+    <Routes>
+      {!isAuthenticated ? (
+        <>
+          <Route path="/login" element={<PublicApp />} />
+          {/* Qualquer outra rota redireciona para o login */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </>
+      ) : (
+        <>
+          {/* Se logado, renderiza o layout protegido para todas as rotas */}
+          <Route path="*" element={<ProtectedLayout />} />
+        </>
+      )}
+    </Routes>
+  );
+}
+
 function App() {
   return (
-    <Router>
-      <PageLayout />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
 
