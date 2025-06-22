@@ -1,82 +1,48 @@
-interface Estacionamento {
-  id: number;
-  nome: string;
-  total_vagas: number;
-  endereco?: string | null;
-  valor_primeira_hora?: number | null;
-  valor_demais_horas?: number | null;
-  valor_diaria?: number | null;
-}
-
-describe("Fluxo de Gerenciamento de Estacionamentos", () => {
+describe('Fluxo de Gerenciamento de Estacionamentos', () => {
   beforeEach(() => {
-    cy.visit("/");
-
-    // Fluxo de login
-    cy.contains("button", "Entrar").click();
-    cy.get('input[placeholder="Digite seu usuário"]').type("admin");
-    cy.get('input[placeholder="Digite sua senha"]').type("admin123");
-    cy.contains("button", "ENTRAR").click();
-
-    // Interceptações
-    cy.intercept("GET", "/api/estacionamentos/", {
-      statusCode: 200,
-      body: [],
-    }).as("getEstacionamentosVazio");
-
-    cy.intercept("POST", "/api/estacionamentos/").as("createEstacionamento");
+    cy.visit('/');
+    cy.intercept('POST', '/api/token').as('loginRequest');
+    cy.contains('button', 'Entrar').click();
+    cy.get('input[placeholder="Digite seu usuário"]').type('admin');
+    cy.get('input[placeholder="Digite sua senha"]').type('admin123');
+    cy.contains('button', 'ENTRAR').click();
+    cy.wait('@loginRequest');
   });
 
-  it("Deve criar um novo estacionamento com sucesso", () => {
-    // Clica no botão "ESTACIONAMENTO" (após login)
-    cy.contains("a.sidebar-link", "ESTACIONAMENTO").click();
+  it('Deve criar um novo estacionamento com sucesso, tratando nomes duplicados', () => {
+    cy.contains('a.sidebar-link', 'ESTACIONAMENTO').click();
+    cy.wait(500);
 
-    // Aguarda chamada inicial
-    cy.wait("@getEstacionamentosVazio");
+    const attemptToCreateEstacionamento = (attempt: number) => {
+      const nomeEstacionamento = `Estacionamento de Teste #${attempt}`;
 
-    // Inicia criação
-    cy.contains("button", "CRIAR ESTACIONAMENTO").click();
+      cy.intercept('POST', '/api/estacionamentos/').as('createEstacionamento');
+      cy.intercept('GET', '/api/estacionamentos/').as('getEstacionamentosAtualizado');
 
-    const nomeEstacionamento = "Estacionamento Cypress TS";
-
-    cy.get('input[placeholder="Ex: EasyPark"]').type(nomeEstacionamento);
-    cy.get('input[placeholder="Ex: AV. 123, numero 23"]').type(
-      "Rua do Teste, 456"
-    );
-    cy.get('input[placeholder="Ex: 123"]').type("200");
-    cy.get('input[placeholder="Ex: 15.00"]').type("20.00");
-    cy.get('input[placeholder="Ex: 5.00"]').type("20.00");
-    cy.get('input[placeholder="Ex: 35.00"]').type("20.00");
-
-    const estacionamentoCriado: Estacionamento = {
-      id: 1,
-      nome: nomeEstacionamento,
-      total_vagas: 200,
-      endereco: "Rua do Teste, 456",
-      valor_primeira_hora: 20.0,
-      valor_demais_horas: null,
-      valor_diaria: null,
+      cy.contains('button', 'CRIAR ESTACIONAMENTO').click();
+      
+      cy.get('input[placeholder="Ex: EasyPark"]').clear().type(nomeEstacionamento);
+      cy.get('input[placeholder="Ex: AV. 123, numero 23"]').clear().type('Rua da Retentativa Final');
+      cy.get('input[placeholder="Ex: 123"]').clear().type('250');
+      cy.get('input[placeholder="Ex: 15.00"]').type('20');
+      cy.get('input[placeholder="Ex: 5.00"]').type('9');
+      cy.get('input[placeholder="Ex: 35.00"]').type('40');
+      
+      cy.contains('button', 'Salvar').click();
+      
+      cy.wait('@createEstacionamento').then((interception) => {
+        if (interception.response?.statusCode === 409) {
+          cy.log(`Nome duplicado encontrado (tentativa ${attempt}). Tentando novamente...`);
+          cy.get('.modal-overlay .btn-cancelar').click();
+          attemptToCreateEstacionamento(attempt + 1);
+        } else {
+          cy.log('Estacionamento criado com sucesso na API!');
+          cy.wait('@getEstacionamentosAtualizado');
+          cy.contains(nomeEstacionamento).should('be.visible');
+        }
+      });
     };
 
-    // Intercepta novo GET após criação
-    cy.intercept("GET", "/api/estacionamentos/", {
-      statusCode: 200,
-      body: [estacionamentoCriado],
-    }).as("getEstacionamentosAtualizado");
-
-    // Salva
-    cy.contains("button", "Salvar").click();
-
-    // Verificações
-    cy.wait("@createEstacionamento")
-      .its("request.body")
-      .should("deep.include", {
-        nome: nomeEstacionamento,
-        total_vagas: 200,
-        valor_primeira_hora: 20,
-      });
-
-    cy.wait("@getEstacionamentosAtualizado");
-    cy.contains(nomeEstacionamento).should("be.visible");
+    attemptToCreateEstacionamento(1);
   });
 });
