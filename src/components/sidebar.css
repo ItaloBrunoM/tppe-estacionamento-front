@@ -7,16 +7,15 @@
   background-color: #2c3e50;
   color: #ecf0f1;
   padding: 20px;
-  padding-top: 20px;
   box-sizing: border-box;
-  transition: margin-left 0.3s ease-in-out;
-  position: fixed;
-  top: 60px;
-  left: 0;
-  z-index: 999;
+  transition: min-width 0.3s ease-out, width 0.3s ease-out, padding 0.3s ease-out;
 }
-.sidebar.hidden {
-  margin-left: -250px;
+
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  padding: 20px 0;
+  overflow: hidden;
 }
 
 .sidebar-header {
@@ -43,9 +42,7 @@
   border-radius: 4px;
   margin-bottom: 10px;
   font-weight: 500;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .sidebar-link:hover {
@@ -63,10 +60,22 @@
   padding-top: 20px;
   border-top: 1px solid #34495e;
   text-align: center;
+  position: relative; /* Necessário para o popup de logout */
 }
 
-.user-info {
-  margin-bottom: 15px;
+.user-profile-button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.user-profile-button:hover {
+  background-color: #34495e;
 }
 
 .user-name {
@@ -81,22 +90,27 @@
   text-transform: uppercase;
 }
 
-.logout-button {
-  background: none;
-  border: 1px solid #7f8c8d;
-  color: #7f8c8d;
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
+.logout-popup {
+  position: absolute;
+  bottom: 100%; /* Posiciona o popup acima do rodapé */
+  left: 0;
+  right: 0;
+  margin-bottom: 10px; /* Espaço entre o popup e o botão de perfil */
+  padding: 0 10px;
 }
 
-.logout-button:hover {
+.logout-option-button {
+  width: 100%;
+  padding: 10px 15px;
   background-color: #c0392b;
-  border-color: #c0392b;
-  color: #ffffff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Espaço entre o ícone e o texto */
 }

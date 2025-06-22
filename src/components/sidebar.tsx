@@ -1,38 +1,84 @@
-import { NavLink } from "react-router-dom";
-import "./sidebar.css";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { LogoutModal } from './LogoutModal';
+import { FiLogOut } from 'react-icons/fi'; // Importa o ícone de logout
+import './sidebar.css';
 
+// A interface agora só espera a prop 'isVisible'
 interface SidebarProps {
-  userName: string;
-  userRole: string;
   isVisible: boolean;
 }
 
-export function Sidebar({ userName, userRole, isVisible }: SidebarProps) {
-  const getLinkClass = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "sidebar-link active" : "sidebar-link";
+export function Sidebar({ isVisible }: SidebarProps) {
+  // Pega o usuário e a função de logout diretamente do contexto
+  const { user, logout } = useAuth(); 
+  
+  const [showLogoutOption, setShowLogoutOption] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const getLinkClass = ({ isActive }: { isActive: boolean }) => 
+    isActive ? 'sidebar-link active' : 'sidebar-link';
+
+  const sidebarClassName = isVisible ? 'sidebar' : 'sidebar collapsed';
+
+  const handleUserClick = () => {
+    setShowLogoutOption(!showLogoutOption);
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+    setShowLogoutOption(false);
+  };
+
+  const handleConfirmLogout = () => {
+    logout();
+    setShowLogoutModal(false);
+  };
+  
+  if (!user) {
+    return null; 
+  }
 
   return (
-    <nav className={`sidebar ${isVisible ? "" : "hidden"}`}>
-      {" "}
-      {/* Aplica a classe 'hidden' com base em isVisible */}
-      <div className="sidebar-header">
-        <h3>ESTACIONAMENTO TOP</h3>
-      </div>
-      <div className="sidebar-links">
-        <NavLink to="/" end className={getLinkClass}>
-          VISÃO GERAL
-        </NavLink>
-        <NavLink to="/estacionamentos" className={getLinkClass}>
-          ESTACIONAMENTO
-        </NavLink>
-      </div>
-      <div className="sidebar-footer">
-        <div className="user-info">
-          <div className="user-name">{userName}</div>
-          <div className="user-role">{userRole}</div>
+    <>
+      <nav className={sidebarClassName}>
+        <div className="sidebar-header">
+          <h3>ESTACIONAMENTO TOP</h3>
         </div>
-        <button className="logout-button">SAIR</button>
-      </div>
-    </nav>
+        <div className="sidebar-links">
+          <NavLink to="/" end className={getLinkClass}>
+            VISÃO GERAL
+          </NavLink>
+          {user.role === 'admin' && (
+            <NavLink to="/estacionamentos" className={getLinkClass}>
+              ESTACIONAMENTO
+            </NavLink>
+          )}
+          {/* Outros links de navegação aqui */}
+        </div>
+        <div className="sidebar-footer">
+          <button className="user-profile-button" onClick={handleUserClick}>
+            <div className="user-name">{user.name}</div> 
+            <div className="user-role">{user.role}</div>
+          </button>
+          
+          {showLogoutOption && (
+            <div className="logout-popup">
+              <button className="logout-option-button" onClick={handleLogoutClick}>
+                <FiLogOut /> Sair
+              </button>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {showLogoutModal && (
+        <LogoutModal 
+          onConfirm={handleConfirmLogout} 
+          onCancel={() => setShowLogoutModal(false)} 
+        />
+      )}
+    </>
   );
 }
