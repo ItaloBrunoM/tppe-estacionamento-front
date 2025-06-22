@@ -26,9 +26,10 @@
 }
 
 .modal-content form label {
-  display: block;
-  margin-bottom: 5px;
+  display: block !important;
   font-size: 14px;
+  color: white;
+  text-align: left;
 }
 
 .modal-content form input {
