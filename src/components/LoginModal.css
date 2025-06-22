@@ -28,6 +28,7 @@
 }
 
 .modal-content form label {
+  display: block !important;;
   display: none;
 }
 
