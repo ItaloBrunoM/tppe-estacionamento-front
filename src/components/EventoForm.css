@@ -1,0 +1,62 @@
+/* Reutilizamos a maior parte do EstacionamentoForm.css */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #2c3e50;
+    padding: 30px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    color: white;
+  }
+  
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .modal-content form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  .modal-content form input,
+  .modal-content form select { /* Adicionamos o select aqui */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #4a6fa5;
+    background-color: #1a2b3c;
+    color: white;
+    box-sizing: border-box;
+  }
+  
+  .time-inputs {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .time-inputs > div {
+    flex: 1;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* ... (estilos dos botões e mensagens de erro) ... */

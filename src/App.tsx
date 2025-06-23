@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { Sidebar } from "./components/sidebar";
 import { Topbar } from "./components/topbar";
 import { EstacionamentoPage } from "./pages/EstacionamentoPage";
+import { EventoPage } from "./pages/EventoPage";
 import { LoginModal } from "./components/LoginModal";
 import "./App.css";
 
@@ -80,6 +81,7 @@ function ProtectedLayout() {
           <Routes>
             <Route path="/" element={<DashboardPlaceholder />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
+            <Route path="/eventos" element={<EventoPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
