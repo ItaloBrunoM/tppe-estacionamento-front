@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import api from "./api";
 import { EventoType } from "../pages/EventoPage";
-import { EstacionamentoType } from "../pages/EstacionamentoPage"; // Reutilizamos para o dropdown
-import "./EventoForm.css"; // Reutilizamos o mesmo estilo do formulário de criação
+import "./EventoForm.css";
 
 interface EventoEditFormProps {
-  evento: EventoType; // Recebe o evento a ser editado como propriedade
+  evento: EventoType;
   onClose: () => void;
   onSuccess: () => void;
 }
