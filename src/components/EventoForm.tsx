@@ -89,7 +89,7 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
           </select>
 
           <label>Nome do Evento</label>
-          <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required />
+          <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required placeholder="Ex: Show de Rock"/>
 
           <label>Data do Evento</label>
           <input type="date" value={dataEvento} onChange={(e) => setDataEvento(e.target.value)} required />

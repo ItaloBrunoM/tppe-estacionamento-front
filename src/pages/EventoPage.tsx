@@ -1,44 +1,40 @@
-import { useState, useEffect } from "react";
-import api from "../components/api";
-import { EventoList } from "../components/EventoList";
-import { EventoForm } from "../components/EventoForm";
-// Futuramente, precisaremos criar estes componentes:
-// import { EventoEditForm } from "../components/EventoEditForm";
-// import { ConfirmModal } from "../components/ConfirmModal";
-// import { ModalAtualiza } from "../components/ModalAtualiza";
+import { useState, useEffect } from 'react';
+import api from '../components/api';
+import { EventoList } from '../components/EventoList';
+import { EventoForm } from '../components/EventoForm';
+import { EventoEditForm } from '../components/EventoEditForm';
+import { ConfirmModal } from '../components/ConfirmModal';
 
-// Interface para o tipo de dado Evento
 export interface EventoType {
   id: number;
   nome: string;
   data_evento: string;
   hora_inicio: string;
   hora_fim: string;
-  valor_acesso_unico: number;
+  valor_acesso_unico: number | null;
   id_estacionamento: number;
 }
 
 export function EventoPage() {
-  const [loading, setLoading] = useState(true);
   const [eventos, setEventos] = useState<EventoType[]>([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Estados para os modais de edição e deleção (para o futuro)
-  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const [eventoToEdit, setEventoToEdit] = useState<EventoType | null>(null);
-  // const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  // const [eventoToDelete, setEventoToDelete] = useState<EventoType | null>(null);
-  // const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const [eventoToEdit, setEventoToEdit] = useState<EventoType | null>(null);
+  const [eventoToDelete, setEventoToDelete] = useState<EventoType | null>(null);
 
   const fetchEventos = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
-      const response = await api.get("/eventos/");
+      const response = await api.get('/eventos/');
       setEventos(response.data);
     } catch (error) {
       console.error("Erro ao buscar eventos:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -46,60 +42,72 @@ export function EventoPage() {
     fetchEventos();
   }, []);
 
-  const handleCreateSuccess = () => {
+  const handleFormSuccess = () => {
     setIsCreateModalOpen(false);
+    setIsEditModalOpen(false); // Fecha o modal de edição também
     fetchEventos();
-    // showSuccessMessage("Novo evento criado com sucesso!"); // Implementar se desejar
   };
 
-  // Funções para edição e deleção (placeholders por enquanto)
   const handleEditClick = (evento: EventoType) => {
-    alert(`A funcionalidade de editar o evento "${evento.nome}" ainda será implementada.`);
-    // setEventoToEdit(evento);
-    // setIsEditModalOpen(true);
+    setEventoToEdit(evento);
+    setIsEditModalOpen(true);
   };
 
   const handleDeleteRequest = (evento: EventoType) => {
-    alert(`A funcionalidade de deletar o evento "${evento.nome}" ainda será implementada.`);
-    // setEventoToDelete(evento);
-    // setIsConfirmModalOpen(true);
+    setEventoToDelete(evento);
+    setIsConfirmModalOpen(true);
   };
 
-  if (loading) {
+  const handleConfirmDelete = async () => {
+    if (!eventoToDelete) return;
+    try {
+      await api.delete(`/eventos/${eventoToDelete.id}`);
+      fetchEventos();
+    } catch (error) {
+      console.error("Erro ao deletar evento:", error);
+      alert("Não foi possível deletar o evento.");
+    } finally {
+      setIsConfirmModalOpen(false);
+      setEventoToDelete(null);
+    }
+  };
+
+  if (isLoading) {
     return <div>Carregando...</div>;
   }
 
   return (
-    <div className="container-evento">
+    <div className="container-eventos">
       <EventoList
         eventos={eventos}
         onAddClick={() => setIsCreateModalOpen(true)}
         onEditClick={handleEditClick}
         onDeleteItemClick={handleDeleteRequest}
       />
-
+      
       {isCreateModalOpen && (
-        <EventoForm
-          onClose={() => setIsCreateModalOpen(false)}
-          onSuccess={handleCreateSuccess}
+        <EventoForm 
+          onClose={() => setIsCreateModalOpen(false)} 
+          onSuccess={handleFormSuccess} 
         />
       )}
 
-      {/* Aqui ficariam os outros modais de edição e confirmação,
-        exatamente como no EstacionamentoPage.tsx
+      {/* Renderiza o modal de edição quando necessário */}
+      {isEditModalOpen && eventoToEdit && (
+        <EventoEditForm
+          evento={eventoToEdit}
+          onClose={() => setIsEditModalOpen(false)}
+          onSuccess={handleFormSuccess}
+        />
+      )}
 
-        {isEditModalOpen && eventoToEdit && (
-           <EventoEditForm ... />
-        )}
-
-        {isConfirmModalOpen && eventoToDelete && (
-          <ConfirmModal ... />
-        )}
-
-        {successMessage && (
-          <ModalAtualiza ... />
-        )}
-      */}
+      {isConfirmModalOpen && eventoToDelete && (
+        <ConfirmModal
+          message={`Tem certeza que deseja excluir o evento "${eventoToDelete.nome}"?`}
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setIsConfirmModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
