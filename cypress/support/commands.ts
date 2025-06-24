@@ -1,37 +1,28 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+// Adicionamos a tipagem para o nosso novo comando
+declare module "cypress" {
+  interface Chainable {
+    loginComoAdmin(): Chainable;
+  }
+}
+
+// -- Este é o comando customizado --
+Cypress.Commands.add("loginComoAdmin", () => {
+  cy.log("Executando login como Administrador...");
+
+  cy.intercept("POST", "/api/token").as("loginRequest");
+
+  cy.visit("/");
+  cy.contains("button", "Entrar").click();
+
+  cy.contains("h2", "Login").should("be.visible");
+
+  cy.get('input[placeholder="Digite seu usuário"]').type("admin");
+  cy.get('input[placeholder="Digite sua senha"]').type("admin123");
+  cy.contains("button", "ENTRAR").click();
+
+  return cy.wait("@loginRequest").then((interception) => {
+    return interception.response?.body?.access_token;
+  });
+});
