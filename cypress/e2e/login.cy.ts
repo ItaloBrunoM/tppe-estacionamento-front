@@ -10,15 +10,11 @@ describe("Fluxo de Login e Logout", () => {
 
     cy.contains("button", "admin").click();
 
-    // Deve aparecer botão "Sair", clica nele
     cy.contains("button", "Sair").click();
 
-    // Confirma o logout clicando em "Confirmar"
     cy.contains("button", "Confirmar").click();
 
-    // Verifica se voltou para a tela inicial (login)
     cy.url().should("eq", Cypress.config().baseUrl + "/");
-    // ou se quiser só garantir que tem o botão entrar de novo:
     cy.contains("button", "Entrar").should("be.visible");
   });
 });
