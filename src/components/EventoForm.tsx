@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from './api';
-import './EventoForm.css'; // Usaremos um novo CSS para ele
+import './EventoForm.css'; 
 
-// Reutilizamos a interface de Estacionamento que já temos
 import { EstacionamentoType } from '../pages/EstacionamentoPage'; 
 
 interface EventoFormProps {
@@ -17,9 +16,24 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
   const [horaFim, setHoraFim] = useState('');
   const [valorAcessoUnico, setValorAcessoUnico] = useState('');
   const [idEstacionamento, setIdEstacionamento] = useState('');
-  const [estacionamentos, setEstacionamentos] = useState<EstacionamentoType[]>([]);  
+  const [estacionamentos, setEstacionamentos] = useState<EstacionamentoType[]>([]); 
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     const fetchEstacionamentos = async () => {
@@ -76,47 +90,49 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" ref={modalRef}>
         <h2>Criar Novo Evento</h2>
-        <form onSubmit={handleSubmit}>
-          
-          <label>Estacionamento</label>
-          <select value={idEstacionamento} onChange={(e) => setIdEstacionamento(e.target.value)} required>
-            <option value="" disabled>Selecione um estacionamento</option>
-            {estacionamentos.map(est => (
-              <option key={est.id} value={est.id}>{est.nome}</option>
-            ))}
-          </select>
+        <div className="modal-scroll-container">
+          <form onSubmit={handleSubmit}>
+            
+            <label>Estacionamento</label>
+            <select value={idEstacionamento} onChange={(e) => setIdEstacionamento(e.target.value)} required>
+              <option value="" disabled>Selecione um estacionamento</option>
+              {estacionamentos.map(est => (
+                <option key={est.id} value={est.id}>{est.nome}</option>
+              ))}
+            </select>
 
-          <label>Nome do Evento</label>
-          <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required placeholder="Ex: Show de Rock"/>
+            <label>Nome do Evento</label>
+            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required placeholder="Ex: Show de Rock"/>
 
-          <label>Data do Evento</label>
-          <input type="date" value={dataEvento} onChange={(e) => setDataEvento(e.target.value)} required />
+            <label>Data do Evento</label>
+            <input type="date" value={dataEvento} onChange={(e) => setDataEvento(e.target.value)} required />
 
-          <div className="time-inputs">
-            <div>
-              <label>Hora de Início</label>
-              <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+            <div className="time-inputs">
+              <div>
+                <label>Hora de Início</label>
+                <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+              </div>
+              <div>
+                <label>Hora de Fim</label>
+                <input type="time" value={horaFim} onChange={(e) => setHoraFim(e.target.value)} required />
+              </div>
             </div>
-            <div>
-              <label>Hora de Fim</label>
-              <input type="time" value={horaFim} onChange={(e) => setHoraFim(e.target.value)} required />
+
+            <label>Valor do Acesso Único (R$)</label>
+            <input type="number" step="0.01" value={valorAcessoUnico} onChange={(e) => setValorAcessoUnico(e.target.value)} placeholder="Ex: 50.00"/>
+
+            {error && <p className="error-message">{error}</p>}
+
+            <div className="form-actions">
+              <button type="button" onClick={onClose} className="btn-cancelar">Cancelar</button>
+              <button type="submit" disabled={isSubmitting} className="btn-salvar">
+                {isSubmitting ? 'Salvando...' : 'Salvar'}
+              </button>
             </div>
-          </div>
-
-          <label>Valor do Acesso Único (R$)</label>
-          <input type="number" step="0.01" value={valorAcessoUnico} onChange={(e) => setValorAcessoUnico(e.target.value)} placeholder="Ex: 50.00"/>
-
-          {error && <p className="error-message">{error}</p>}
-
-          <div className="form-actions">
-            <button type="button" onClick={onClose} className="btn-cancelar">Cancelar</button>
-            <button type="submit" disabled={isSubmitting} className="btn-salvar">
-              {isSubmitting ? 'Salvando...' : 'Salvar'}
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

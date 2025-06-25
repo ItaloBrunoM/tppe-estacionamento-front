@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "./api";
 import "./EstacionamentoForm.css";
 
-// Interface para as propriedades que o componente recebe
 interface EstacionamentoFormProps {
   onClose: () => void;
   onSuccess: () => void;
@@ -12,7 +11,6 @@ export function EstacionamentoForm({
   onClose,
   onSuccess,
 }: EstacionamentoFormProps) {
-  // Estados para cada campo do formulário
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
   const [totalVagas, setTotalVagas] = useState("");
@@ -21,6 +19,20 @@ export function EstacionamentoForm({
   const [valorDiaria, setValorDiaria] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,77 +78,79 @@ export function EstacionamentoForm({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" ref={modalRef}>
         <h2>Criar Estacionamento</h2>
-        <form onSubmit={handleSubmit}>
-          <label>Nome do Estacionamento</label>
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            placeholder="Ex: EasyPark"
-            required
-          />
+        <div className="modal-scroll-container"> 
+          <form onSubmit={handleSubmit}>
+            <label>Nome do Estacionamento</label>
+            <input
+              type="text"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Ex: EasyPark"
+              required
+            />
 
-          <label>Endereço</label>
-          <input
-            type="text"
-            value={endereco}
-            onChange={(e) => setEndereco(e.target.value)}
-            placeholder="Ex: AV. 123, numero 23"
-          />
+            <label>Endereço</label>
+            <input
+              type="text"
+              value={endereco}
+              onChange={(e) => setEndereco(e.target.value)}
+              placeholder="Ex: AV. 123, numero 23"
+            />
 
-          <label>Capacidade</label>
-          <input
-            type="number"
-            value={totalVagas}
-            onChange={(e) => setTotalVagas(e.target.value)}
-            placeholder="Ex: 123"
-            required
-          />
+            <label>Capacidade</label>
+            <input
+              type="number"
+              value={totalVagas}
+              onChange={(e) => setTotalVagas(e.target.value)}
+              placeholder="Ex: 123"
+              required
+            />
 
-          <label>Valor por Primeira Hora (R$)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={valorPrimeiraHora}
-            onChange={(e) => setValorPrimeiraHora(e.target.value)}
-            placeholder="Ex: 15.00"
-          />
+            <label>Valor por Primeira Hora (R$)</label>
+            <input
+              type="number"
+              step="0.01"
+              value={valorPrimeiraHora}
+              onChange={(e) => setValorPrimeiraHora(e.target.value)}
+              placeholder="Ex: 15.00"
+            />
 
-          <label>Valor por Demais Horas (R$)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={valorDemaisHoras}
-            onChange={(e) => setValorDemaisHoras(e.target.value)}
-            placeholder="Ex: 5.00"
-          />
+            <label>Valor por Demais Horas (R$)</label>
+            <input
+              type="number"
+              step="0.01"
+              value={valorDemaisHoras}
+              onChange={(e) => setValorDemaisHoras(e.target.value)}
+              placeholder="Ex: 5.00"
+            />
 
-          <label>Valor da Diária (R$)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={valorDiaria}
-            onChange={(e) => setValorDiaria(e.target.value)}
-            placeholder="Ex: 35.00"
-          />
+            <label>Valor da Diária (R$)</label>
+            <input
+              type="number"
+              step="0.01"
+              value={valorDiaria}
+              onChange={(e) => setValorDiaria(e.target.value)}
+              placeholder="Ex: 35.00"
+            />
 
-          {error && <p className="error-message">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-          <div className="form-actions">
-            <button type="button" onClick={onClose} className="btn-cancelar">
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn-salvar"
-            >
-              {isSubmitting ? "Salvando..." : "Salvar"}
-            </button>
-          </div>
-        </form>
+            <div className="form-actions">
+              <button type="button" onClick={onClose} className="btn-cancelar">
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-salvar"
+              >
+                {isSubmitting ? "Salvando..." : "Salvar"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

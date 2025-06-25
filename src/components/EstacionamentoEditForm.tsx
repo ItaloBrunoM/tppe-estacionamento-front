@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "./api";
-import "./EstacionamentoForm.css";
+import "./EstacionamentoEditForm.css"; 
 import { EstacionamentoType } from "../pages/EstacionamentoPage";
 
 interface EstacionamentoEditFormProps {
@@ -30,6 +30,21 @@ export function EstacionamentoEditForm({
   );
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     setNome(estacionamento.nome || "");
@@ -73,91 +88,93 @@ export function EstacionamentoEditForm({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" ref={modalRef}>
         <h2>Editar Estacionamento</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="nome">Nome do Estacionamento</label>
-          <input
-            type="text"
-            id="nome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            placeholder="Ex: EasyPark"
-            required
-          />
+        <div className="modal-scroll-container">
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nome">Nome do Estacionamento</label>
+            <input
+              type="text"
+              id="nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Ex: EasyPark"
+              required
+            />
 
-          <label htmlFor="endereco">Endereço</label>
-          <input
-            type="text"
-            id="endereco"
-            value={endereco}
-            onChange={(e) => setEndereco(e.target.value)}
-            placeholder="Ex: AV. 123, numero 23"
-            required
-          />
+            <label htmlFor="endereco">Endereço</label>
+            <input
+              type="text"
+              id="endereco"
+              value={endereco}
+              onChange={(e) => setEndereco(e.target.value)}
+              placeholder="Ex: AV. 123, numero 23"
+              required
+            />
 
-          <label htmlFor="total_vagas">Capacidade</label>
-          <input
-            type="number"
-            id="total_vagas"
-            value={totalVagas}
-            onChange={(e) => setTotalVagas(e.target.value)}
-            placeholder="Ex: 123"
-            required
-          />
+            <label htmlFor="total_vagas">Capacidade</label>
+            <input
+              type="number"
+              id="total_vagas"
+              value={totalVagas}
+              onChange={(e) => setTotalVagas(e.target.value)}
+              placeholder="Ex: 123"
+              required
+            />
 
-          <label htmlFor="valor_primeira_hora">
-            Valor por Primeira Hora (R$)
-          </label>
-          <input
-            type="number"
-            id="valor_primeira_hora"
-            step="0.01"
-            value={valorPrimeiraHora}
-            onChange={(e) => setValorPrimeiraHora(e.target.value)}
-            placeholder="Ex: 15.00"
-            required
-          />
+            <label htmlFor="valor_primeira_hora">
+              Valor por Primeira Hora (R$)
+            </label>
+            <input
+              type="number"
+              id="valor_primeira_hora"
+              step="0.01"
+              value={valorPrimeiraHora}
+              onChange={(e) => setValorPrimeiraHora(e.target.value)}
+              placeholder="Ex: 15.00"
+              required
+            />
 
-          <label htmlFor="valor_demais_horas">
-            Valor por Demais Horas (R$)
-          </label>
-          <input
-            type="number"
-            id="valor_demais_horas"
-            step="0.01"
-            value={valorDemaisHoras}
-            onChange={(e) => setValorDemaisHoras(e.target.value)}
-            placeholder="Ex: 5.00"
-            required
-          />
+            <label htmlFor="valor_demais_horas">
+              Valor por Demais Horas (R$)
+            </label>
+            <input
+              type="number"
+              id="valor_demais_horas"
+              step="0.01"
+              value={valorDemaisHoras}
+              onChange={(e) => setValorDemaisHoras(e.target.value)}
+              placeholder="Ex: 5.00"
+              required
+            />
 
-          <label htmlFor="valor_diaria">Valor da Diária (R$)</label>
-          <input
-            type="number"
-            id="valor_diaria"
-            step="0.01"
-            value={valorDiaria}
-            onChange={(e) => setValorDiaria(e.target.value)}
-            placeholder="Ex: 35.00"
-            required
-          />
+            <label htmlFor="valor_diaria">Valor da Diária (R$)</label>
+            <input
+              type="number"
+              id="valor_diaria"
+              step="0.01"
+              value={valorDiaria}
+              onChange={(e) => setValorDiaria(e.target.value)}
+              placeholder="Ex: 35.00"
+              required
+            />
 
-          {error && <p className="error-message">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-          <div className="form-actions">
-            <button type="button" onClick={onClose} className="btn-cancelar">
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn-salvar"
-            >
-              {isSubmitting ? "Atualizando..." : "Atualizar"}
-            </button>
-          </div>
-        </form>
+            <div className="form-actions">
+              <button type="button" onClick={onClose} className="btn-cancelar">
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-salvar"
+              >
+                {isSubmitting ? "Atualizando..." : "Atualizar"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
