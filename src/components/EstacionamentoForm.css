@@ -55,7 +55,7 @@
   margin-bottom: 20px;
   color: white;
   font-size: 1.5rem;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 fieldset {
@@ -63,7 +63,7 @@ fieldset {
   border-radius: 6px;
   padding: 15px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   background-color: rgba(26, 43, 60, 0.3);
 }
 
@@ -74,7 +74,7 @@ legend {
   font-weight: bold;
   background-color: #34495e;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content form label {
@@ -95,15 +95,16 @@ legend {
   background-color: #1a2b3c;
   color: white;
   box-sizing: border-box;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content form input:focus,
 .modal-content form select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3),
-              inset 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow:
+    0 0 0 2px rgba(52, 152, 219, 0.3),
+    inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .error-message {
@@ -114,7 +115,7 @@ legend {
   border-radius: 4px;
   font-size: 0.9em;
   border-left: 3px solid #e74c3c;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .error-message.cpf-error {
@@ -141,7 +142,7 @@ legend {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-cancelar {
@@ -151,7 +152,7 @@ legend {
 
 .btn-cancelar:hover {
   background-color: #6c7a7d;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-salvar {
@@ -161,7 +162,7 @@ legend {
 
 .btn-salvar:hover {
   background-color: #2980b9;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-salvar:disabled {
@@ -175,11 +176,11 @@ legend {
   .modal-content {
     padding: 20px;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .btn-cancelar,
   .btn-salvar {
     width: 100%;

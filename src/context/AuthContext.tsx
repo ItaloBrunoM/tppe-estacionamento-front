@@ -24,13 +24,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { isAuthenticated: false, user: null };
     }
     try {
-      const decoded: { sub: string; role: string; id: number } = jwtDecode(token);
+      const decoded: { sub: string; role: string; id: number } =
+        jwtDecode(token);
       return {
         isAuthenticated: true,
-        user: { 
+        user: {
           id: decoded.id,
-          name: decoded.sub, 
-          role: decoded.role 
+          name: decoded.sub,
+          role: decoded.role,
         },
       };
     } catch (e) {
@@ -56,10 +57,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (token: string) => {
     localStorage.setItem("accessToken", token);
     const decoded: { sub: string; role: string; id: number } = jwtDecode(token);
-    setUser({ 
+    setUser({
       id: decoded.id, // Inclua o ID
-      name: decoded.sub, 
-      role: decoded.role 
+      name: decoded.sub,
+      role: decoded.role,
     });
     setIsAuthenticated(true);
   };

@@ -56,7 +56,7 @@ export function UsersPage() {
     fetchUsers();
     showSuccessMessage(`Usuário "${login}" atualizado com sucesso!`);
   };
-  
+
   const handleDeleteRequest = (user: User) => {
     setUserToDelete(user);
     setIsConfirmModalOpen(true);
@@ -90,7 +90,6 @@ export function UsersPage() {
 
   return (
     <div className="container mx-auto p-4">
-
       <UserList
         users={users}
         onAddClick={() => setIsCreateModalOpen(true)}

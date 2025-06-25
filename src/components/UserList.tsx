@@ -28,18 +28,18 @@ export function UserList({
           <div key={user.id} className="list-item">
             <div className="item-info">
               <span className="item-name">
-                {user.pessoa?.nome || 'Nome não disponível'}
+                {user.pessoa?.nome || "Nome não disponível"}
               </span>
               <div className="item-details">
                 <span>Login: {user.login} Cargo: </span>
                 <span className={`role-badge ${user.role.toLowerCase()}`}>
-                  {user.role === 'admin' ? 'Administrador' : 'Funcionário'}
+                  {user.role === "admin" ? "Administrador" : "Funcionário"}
                 </span>
               </div>
             </div>
             <div className="item-actions">
-              <button 
-                className="icon-btn edit-btn" 
+              <button
+                className="icon-btn edit-btn"
                 onClick={() => onEditClick(user)}
                 aria-label="Editar usuário"
               >

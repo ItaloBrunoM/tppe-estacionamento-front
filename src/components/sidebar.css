@@ -65,7 +65,7 @@
   padding-top: 20px;
   border-top: 1px solid #34495e;
   text-align: center;
-  position: relative; /* Necessário para o popup de logout */
+  position: relative;
 }
 
 .user-profile-button {
@@ -97,10 +97,10 @@
 
 .logout-popup {
   position: absolute;
-  bottom: 100%; /* Posiciona o popup acima do rodapé */
+  bottom: 100%;
   left: 0;
   right: 0;
-  margin-bottom: 10px; /* Espaço entre o popup e o botão de perfil */
+  margin-bottom: 10px;
   padding: 0 10px;
 }
 

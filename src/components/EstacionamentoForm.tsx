@@ -23,7 +23,10 @@ export function EstacionamentoForm({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -63,7 +66,7 @@ export function EstacionamentoForm({
 
     try {
       await api.post("/estacionamentos/", data);
-      onSuccess(); 
+      onSuccess();
     } catch (err: any) {
       if (err.response && err.response.status === 409) {
         setError(err.response.data.detail);
@@ -80,7 +83,7 @@ export function EstacionamentoForm({
     <div className="modal-overlay">
       <div className="modal-content" ref={modalRef}>
         <h2>Criar Estacionamento</h2>
-        <div className="modal-scroll-container"> 
+        <div className="modal-scroll-container">
           <form onSubmit={handleSubmit}>
             <label>Nome do Estacionamento</label>
             <input

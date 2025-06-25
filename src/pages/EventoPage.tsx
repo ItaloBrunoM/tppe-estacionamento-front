@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import api from '../components/api';
-import { EventoList } from '../components/EventoList';
-import { EventoForm } from '../components/EventoForm';
-import { EventoEditForm } from '../components/EventoEditForm';
-import { ConfirmModal } from '../components/ConfirmModal';
+import { useState, useEffect } from "react";
+import api from "../components/api";
+import { EventoList } from "../components/EventoList";
+import { EventoForm } from "../components/EventoForm";
+import { EventoEditForm } from "../components/EventoEditForm";
+import { ConfirmModal } from "../components/ConfirmModal";
 
 export interface EventoType {
   id: number;
@@ -18,7 +18,7 @@ export interface EventoType {
 export function EventoPage() {
   const [eventos, setEventos] = useState<EventoType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -29,7 +29,7 @@ export function EventoPage() {
   const fetchEventos = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/eventos/');
+      const response = await api.get("/eventos/");
       setEventos(response.data);
     } catch (error) {
       console.error("Erro ao buscar eventos:", error);
@@ -44,7 +44,7 @@ export function EventoPage() {
 
   const handleFormSuccess = () => {
     setIsCreateModalOpen(false);
-    setIsEditModalOpen(false); // Fecha o modal de edição também
+    setIsEditModalOpen(false);
     fetchEventos();
   };
 
@@ -84,15 +84,14 @@ export function EventoPage() {
         onEditClick={handleEditClick}
         onDeleteItemClick={handleDeleteRequest}
       />
-      
+
       {isCreateModalOpen && (
-        <EventoForm 
-          onClose={() => setIsCreateModalOpen(false)} 
-          onSuccess={handleFormSuccess} 
+        <EventoForm
+          onClose={() => setIsCreateModalOpen(false)}
+          onSuccess={handleFormSuccess}
         />
       )}
 
-      {/* Renderiza o modal de edição quando necessário */}
       {isEditModalOpen && eventoToEdit && (
         <EventoEditForm
           evento={eventoToEdit}

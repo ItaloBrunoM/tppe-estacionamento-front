@@ -13,7 +13,6 @@ export function Topbar({ title, onMenuClick, onLoginClick }: TopbarProps) {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
-        {/* Só mostra o botão de menu se estiver logado */}
         {isAuthenticated && (
           <button className="menu-button" onClick={onMenuClick}>
             ☰
@@ -24,7 +23,6 @@ export function Topbar({ title, onMenuClick, onLoginClick }: TopbarProps) {
       <div className="top-bar-right">
         <div className="user-profile">
           <span className="user-icon">👤</span>
-          {/* Mostra o nome do usuário se logado, ou o botão de Entrar se não */}
           {isAuthenticated ? (
             <span className="user-name-display">{user?.name}</span>
           ) : (

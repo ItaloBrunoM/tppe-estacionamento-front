@@ -63,7 +63,6 @@ export function Sidebar({ isVisible }: SidebarProps) {
               </NavLink>
             </>
           )}
-          {/* Outros links de navegação aqui */}
         </div>
         <div className="sidebar-footer">
           <button className="user-profile-button" onClick={handleUserClick}>

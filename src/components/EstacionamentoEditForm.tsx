@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import api from "./api";
-import "./EstacionamentoEditForm.css"; 
+import "./EstacionamentoEditForm.css";
 import { EstacionamentoType } from "../pages/EstacionamentoPage";
 
 interface EstacionamentoEditFormProps {
@@ -35,7 +35,10 @@ export function EstacionamentoEditForm({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };

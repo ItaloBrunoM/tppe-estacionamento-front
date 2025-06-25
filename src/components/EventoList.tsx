@@ -1,5 +1,5 @@
-import { EventoType } from "../pages/EventoPage"; // Importa a interface da página pai
-import "./EventoList.css"; // Usaremos um CSS dedicado para a lista de eventos
+import { EventoType } from "../pages/EventoPage";
+import "./EventoList.css";
 
 interface EventoListProps {
   eventos: EventoType[];
@@ -43,15 +43,13 @@ export function EventoList({
               marginBottom: "10px",
             }}
           >
-            {/* Exibe as informações do evento */}
             <div className="item-info">
-                <span className="item-name">{evento.nome}</span>
-                {/* Criamos uma frase mais natural para os detalhes */}
-                <span className="item-detail">
-                  {` |  Ocorrerá em ${new Date(evento.data_evento).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} das ${evento.hora_inicio} às ${evento.hora_fim}`}
-                </span>
+              <span className="item-name">{evento.nome}</span>
+              <span className="item-detail">
+                {` |  Ocorrerá em ${new Date(evento.data_evento).toLocaleDateString("pt-BR", { timeZone: "UTC" })} das ${evento.hora_inicio} às ${evento.hora_fim}`}
+              </span>
             </div>
-            
+
             <div className="item-actions">
               <button className="icon-btn" onClick={() => onEditClick(evento)}>
                 ✏️

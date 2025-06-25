@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'funcionario';
+export type UserRole = "admin" | "funcionario";
 
 export interface Pessoa {
   id: number;
@@ -8,17 +8,17 @@ export interface Pessoa {
 }
 
 export interface User {
-    id: number;
-    login: string;
-    role: 'admin' | 'funcionario';
-    id_pessoa: number;
-    admin_id: number | null;
-    pessoa?: {
-      nome: string;
-      cpf: string;
-      email: string | null;
-    };
-  }
+  id: number;
+  login: string;
+  role: "admin" | "funcionario";
+  id_pessoa: number;
+  admin_id: number | null;
+  pessoa?: {
+    nome: string;
+    cpf: string;
+    email: string | null;
+  };
+}
 
 export interface CreateUserPayload {
   pessoa_data: {

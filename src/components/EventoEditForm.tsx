@@ -21,17 +21,19 @@ export function EventoEditForm({
   const [valorAcessoUnico, setValorAcessoUnico] = useState(
     String(evento.valor_acesso_unico || "")
   );
-  const [idEstacionamento] = useState(String(evento.id_estacionamento)); // idEstacionamento não é editável aqui
+  const [idEstacionamento] = useState(String(evento.id_estacionamento));
 
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const modalRef = useRef<HTMLDivElement>(null); // Adicionado ref para o modal
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  // Efeito para fechar o modal ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -42,20 +44,15 @@ export function EventoEditForm({
     };
   }, [onClose]);
 
-  // Não precisamos buscar a lista de estacionamentos aqui, pois o idEstacionamento não é um campo de seleção no formulário de edição atual.
-  // Se você quiser que o idEstacionamento seja editável e selecionável, precisaria de um useEffect para buscar os estacionamentos,
-  // como no EventoForm de criação.
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
-    // Adicione validações aqui se desejar (ex: hora fim > hora início)
     if (horaInicio && horaFim && horaFim <= horaInicio) {
-        setError('A hora de fim deve ser posterior à hora de início.');
-        setIsSubmitting(false);
-        return;
+      setError("A hora de fim deve ser posterior à hora de início.");
+      setIsSubmitting(false);
+      return;
     }
 
     const dataToUpdate = {
@@ -64,11 +61,10 @@ export function EventoEditForm({
       hora_inicio: horaInicio,
       hora_fim: horaFim,
       valor_acesso_unico: parseFloat(valorAcessoUnico) || null,
-      id_estacionamento: parseInt(idEstacionamento, 10), // idEstacionamento é preenchido do prop 'evento'
+      id_estacionamento: parseInt(idEstacionamento, 10),
     };
 
     try {
-      // Usamos o método PUT e passamos o ID do evento na URL
       await api.put(`/eventos/${evento.id}`, dataToUpdate);
       onSuccess();
     } catch (err) {
@@ -81,13 +77,10 @@ export function EventoEditForm({
 
   return (
     <div className="modal-overlay">
-      {/* Adicionado ref ao div do modal-content */}
       <div className="modal-content" ref={modalRef}>
         <h2>Editar Evento</h2>
-        {/* Adicionado um container para scroll, similar aos outros formulários */}
         <div className="modal-scroll-container">
           <form onSubmit={handleSubmit}>
-            {/* O formulário é idêntico ao de criação, mas os inputs já vêm preenchidos */}
 
             <label>Nome do Evento</label>
             <input
@@ -149,7 +142,7 @@ export function EventoEditForm({
               </button>
             </div>
           </form>
-        </div> {/* Fechamento do modal-scroll-container */}
+        </div>{" "}
       </div>
     </div>
   );

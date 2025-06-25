@@ -1,4 +1,3 @@
-/* Estilos para o container da lista de eventos, baseados no de estacionamento */
 .evento-list-container .header-actions {
   display: flex;
   justify-content: space-between;
@@ -62,11 +61,10 @@
   border-bottom: none;
 }
 
-/* --- Estilos específicos para a informação do item --- */
 .evento-list-container .item-info {
-    display: flex;
-    flex-direction: column; /* Coloca o nome e os detalhes um sobre o outro */
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column; 
+  flex-grow: 1;
 }
 
 .evento-list-container .item-name {
@@ -78,7 +76,7 @@
 .evento-list-container .item-detail {
   font-size: 14px;
   color: #7f8c8d;
-  margin-top: 4px; /* Pequeno espaço entre o nome e os detalhes */
+  margin-top: 4px;
 }
 
 .evento-list-container .item-actions .icon-btn {

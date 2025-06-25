@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import './MarcarEntrada.css';
+import React, { useState } from "react";
+import "./MarcarEntrada.css";
 
 interface MarcarEntradaProps {
   onMarcarAcesso: (placa: string) => void;
   isLoading: boolean;
 }
 
-const MarcarEntrada: React.FC<MarcarEntradaProps> = ({ onMarcarAcesso, isLoading }) => {
-  const [placa, setPlaca] = useState<string>('');
+const MarcarEntrada: React.FC<MarcarEntradaProps> = ({
+  onMarcarAcesso,
+  isLoading,
+}) => {
+  const [placa, setPlaca] = useState<string>("");
 
   const handleSubmit = () => {
     if (placa.trim()) {
       onMarcarAcesso(placa.trim());
-      setPlaca('');
+      setPlaca("");
     }
   };
 
@@ -36,7 +39,7 @@ const MarcarEntrada: React.FC<MarcarEntradaProps> = ({ onMarcarAcesso, isLoading
         className="button"
         disabled={isLoading || !placa.trim()}
       >
-        {isLoading ? 'Marcando...' : 'Marcar Acesso'}
+        {isLoading ? "Marcando..." : "Marcar Acesso"}
       </button>
     </div>
   );

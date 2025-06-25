@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import api from './api';
-import './EventoForm.css'; 
+import { useState, useEffect, useRef } from "react";
+import api from "./api";
+import "./EventoForm.css";
 
-import { EstacionamentoType } from '../pages/EstacionamentoPage'; 
+import { EstacionamentoType } from "../pages/EstacionamentoPage";
 
 interface EventoFormProps {
   onClose: () => void;
@@ -10,21 +10,26 @@ interface EventoFormProps {
 }
 
 export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
-  const [nome, setNome] = useState('');
-  const [dataEvento, setDataEvento] = useState('');
-  const [horaInicio, setHoraInicio] = useState('');
-  const [horaFim, setHoraFim] = useState('');
-  const [valorAcessoUnico, setValorAcessoUnico] = useState('');
-  const [idEstacionamento, setIdEstacionamento] = useState('');
-  const [estacionamentos, setEstacionamentos] = useState<EstacionamentoType[]>([]); 
-  const [error, setError] = useState('');
+  const [nome, setNome] = useState("");
+  const [dataEvento, setDataEvento] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFim, setHoraFim] = useState("");
+  const [valorAcessoUnico, setValorAcessoUnico] = useState("");
+  const [idEstacionamento, setIdEstacionamento] = useState("");
+  const [estacionamentos, setEstacionamentos] = useState<EstacionamentoType[]>(
+    []
+  );
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -38,7 +43,7 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
   useEffect(() => {
     const fetchEstacionamentos = async () => {
       try {
-        const response = await api.get('/estacionamentos/');
+        const response = await api.get("/estacionamentos/");
         setEstacionamentos(response.data);
       } catch (err) {
         console.error("Erro ao buscar estacionamentos para o formulário.", err);
@@ -51,20 +56,20 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     if (horaInicio && horaFim && horaFim <= horaInicio) {
-        setError('A hora de fim deve ser posterior à hora de início.');
-        setIsSubmitting(false);
-        return;
-      }
-
-    if (!nome || !idEstacionamento || !dataEvento || !horaInicio || !horaFim) {
-      setError('Todos os campos, exceto o valor, são obrigatórios.');
+      setError("A hora de fim deve ser posterior à hora de início.");
       setIsSubmitting(false);
       return;
     }
-    
+
+    if (!nome || !idEstacionamento || !dataEvento || !horaInicio || !horaFim) {
+      setError("Todos os campos, exceto o valor, são obrigatórios.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const data = {
       nome,
       data_evento: dataEvento,
@@ -75,13 +80,13 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
     };
 
     try {
-      await api.post('/eventos/', data);
+      await api.post("/eventos/", data);
       onSuccess();
     } catch (err: any) {
       if (err.response && err.response.status === 409) {
         setError(err.response.data.detail);
       } else {
-        setError('Erro ao criar o evento. Tente novamente.');
+        setError("Erro ao criar o evento. Tente novamente.");
       }
     } finally {
       setIsSubmitting(false);
@@ -94,41 +99,81 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
         <h2>Criar Novo Evento</h2>
         <div className="modal-scroll-container">
           <form onSubmit={handleSubmit}>
-            
             <label>Estacionamento</label>
-            <select value={idEstacionamento} onChange={(e) => setIdEstacionamento(e.target.value)} required>
-              <option value="" disabled>Selecione um estacionamento</option>
-              {estacionamentos.map(est => (
-                <option key={est.id} value={est.id}>{est.nome}</option>
+            <select
+              value={idEstacionamento}
+              onChange={(e) => setIdEstacionamento(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Selecione um estacionamento
+              </option>
+              {estacionamentos.map((est) => (
+                <option key={est.id} value={est.id}>
+                  {est.nome}
+                </option>
               ))}
             </select>
 
             <label>Nome do Evento</label>
-            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required placeholder="Ex: Show de Rock"/>
+            <input
+              type="text"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+              placeholder="Ex: Show de Rock"
+            />
 
             <label>Data do Evento</label>
-            <input type="date" value={dataEvento} onChange={(e) => setDataEvento(e.target.value)} required />
+            <input
+              type="date"
+              value={dataEvento}
+              onChange={(e) => setDataEvento(e.target.value)}
+              required
+            />
 
             <div className="time-inputs">
               <div>
                 <label>Hora de Início</label>
-                <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+                <input
+                  type="time"
+                  value={horaInicio}
+                  onChange={(e) => setHoraInicio(e.target.value)}
+                  required
+                />
               </div>
               <div>
                 <label>Hora de Fim</label>
-                <input type="time" value={horaFim} onChange={(e) => setHoraFim(e.target.value)} required />
+                <input
+                  type="time"
+                  value={horaFim}
+                  onChange={(e) => setHoraFim(e.target.value)}
+                  required
+                />
               </div>
             </div>
 
             <label>Valor do Acesso Único (R$)</label>
-            <input type="number" step="0.01" value={valorAcessoUnico} onChange={(e) => setValorAcessoUnico(e.target.value)} placeholder="Ex: 50.00"/>
+            <input
+              type="number"
+              step="0.01"
+              value={valorAcessoUnico}
+              onChange={(e) => setValorAcessoUnico(e.target.value)}
+              placeholder="Ex: 50.00"
+            />
 
             {error && <p className="error-message">{error}</p>}
 
             <div className="form-actions">
-              <button type="button" onClick={onClose} className="btn-cancelar">Cancelar</button>
-              <button type="submit" disabled={isSubmitting} className="btn-salvar">
-                {isSubmitting ? 'Salvando...' : 'Salvar'}
+              <button type="button" onClick={onClose} className="btn-cancelar">
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-salvar"
+              >
+                {isSubmitting ? "Salvando..." : "Salvar"}
               </button>
             </div>
           </form>
