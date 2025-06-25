@@ -12,6 +12,7 @@ import { Topbar } from "./components/topbar";
 import { EstacionamentoPage } from "./pages/EstacionamentoPage";
 import { EventoPage } from "./pages/EventoPage";
 import { UsersPage } from "./pages/UsersPage";
+import AcessoPage from "./pages/AcessoPage";
 import { LoginModal } from "./components/LoginModal";
 import "./App.css";
 
@@ -65,6 +66,8 @@ function ProtectedLayout() {
     currentPageTitle = "Usuários";
   } else if (location.pathname === "/") {
     currentPageTitle = "Visão Geral";
+  } else if (location.pathname.startsWith("/acesso")) {
+    currentPageTitle = "Acesso";
   }
 
   function DashboardPlaceholder() {
@@ -83,6 +86,7 @@ function ProtectedLayout() {
             <Route path="/" element={<DashboardPlaceholder />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
             <Route path="/eventos" element={<EventoPage />} />
+            <Route path="/acesso" element={<AcessoPage />} />
             <Route path="/usuarios" element={<UsersPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

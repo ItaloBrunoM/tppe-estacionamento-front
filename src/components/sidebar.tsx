@@ -47,6 +47,9 @@ export function Sidebar({ isVisible }: SidebarProps) {
           <NavLink to="/" end className={getLinkClass}>
             VISÃO GERAL
           </NavLink>
+          <NavLink to="/acesso" end className={getLinkClass}>
+            REGISTRO DE ENTRADA/SAÍDA
+          </NavLink>
           {user.role === "admin" && (
             <>
               <NavLink to="/estacionamentos" className={getLinkClass}>

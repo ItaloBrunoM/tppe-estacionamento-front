@@ -14,7 +14,6 @@ export function EventoEditForm({
   onClose,
   onSuccess,
 }: EventoEditFormProps) {
-  // O estado inicial é preenchido com os dados do evento existente
   const [nome, setNome] = useState(evento.nome);
   const [dataEvento, setDataEvento] = useState(evento.data_evento);
   const [horaInicio, setHoraInicio] = useState(evento.hora_inicio);
