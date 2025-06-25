@@ -11,10 +11,10 @@ import { Sidebar } from "./components/sidebar";
 import { Topbar } from "./components/topbar";
 import { EstacionamentoPage } from "./pages/EstacionamentoPage";
 import { EventoPage } from "./pages/EventoPage";
+import { UsersPage } from "./pages/UsersPage";
 import { LoginModal } from "./components/LoginModal";
 import "./App.css";
 
-// Roteador principal que decide qual layout mostrar
 function AppRoutes() {
   const { isAuthenticated } = useAuth();
   return (
@@ -28,7 +28,6 @@ function AppRoutes() {
   );
 }
 
-// Layout para usuários deslogados
 function PublicLayout() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   return (
@@ -49,7 +48,6 @@ function PublicLayout() {
   );
 }
 
-// Layout para usuários logados
 function ProtectedLayout() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const location = useLocation();
@@ -61,6 +59,10 @@ function ProtectedLayout() {
 
   if (location.pathname.startsWith("/estacionamentos")) {
     currentPageTitle = "Estacionamento";
+  } else if (location.pathname.startsWith("/eventos")) {
+    currentPageTitle = "Eventos";
+  } else if (location.pathname.startsWith("/usuarios")) {
+    currentPageTitle = "Usuários";
   } else if (location.pathname === "/") {
     currentPageTitle = "Visão Geral";
   }
@@ -71,7 +73,6 @@ function ProtectedLayout() {
 
   return (
     <div className="app-layout">
-      {/* A Sidebar não precisa mais de props de usuário */}
       <Sidebar isVisible={isSidebarVisible} />
       <div
         className={`main-container ${isSidebarVisible ? "main-container-shifted" : ""}`}
@@ -82,6 +83,7 @@ function ProtectedLayout() {
             <Route path="/" element={<DashboardPlaceholder />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
             <Route path="/eventos" element={<EventoPage />} />
+            <Route path="/usuarios" element={<UsersPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>

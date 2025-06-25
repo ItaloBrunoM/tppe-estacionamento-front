@@ -55,6 +55,9 @@ export function Sidebar({ isVisible }: SidebarProps) {
               <NavLink to="/eventos" className={getLinkClass}>
                 EVENTO
               </NavLink>
+              <NavLink to="/usuarios" className={getLinkClass}>
+                USUARIOS
+              </NavLink>
             </>
           )}
           {/* Outros links de navegação aqui */}

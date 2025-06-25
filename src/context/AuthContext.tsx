@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import api from "../components/api";
 
 interface User {
+  id: number;
   name: string;
   role: string;
 }
@@ -23,10 +24,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { isAuthenticated: false, user: null };
     }
     try {
-      const decoded: { sub: string; role: string } = jwtDecode(token);
+      const decoded: { sub: string; role: string; id: number } = jwtDecode(token);
       return {
         isAuthenticated: true,
-        user: { name: decoded.sub, role: decoded.role },
+        user: { 
+          id: decoded.id,
+          name: decoded.sub, 
+          role: decoded.role 
+        },
       };
     } catch (e) {
       localStorage.removeItem("accessToken");
@@ -50,8 +55,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (token: string) => {
     localStorage.setItem("accessToken", token);
-    const decoded: { sub: string; role: string } = jwtDecode(token);
-    setUser({ name: decoded.sub, role: decoded.role });
+    const decoded: { sub: string; role: string; id: number } = jwtDecode(token);
+    setUser({ 
+      id: decoded.id, // Inclua o ID
+      name: decoded.sub, 
+      role: decoded.role 
+    });
     setIsAuthenticated(true);
   };
 
