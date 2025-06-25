@@ -4,7 +4,7 @@ describe('Fluxo de Gerenciamento de Estacionamentos', () => {
     cy.intercept('POST', '/api/token').as('loginRequest');
     cy.contains('button', 'Entrar').click();
     cy.get('input[placeholder="Digite seu usuário"]').type('admin');
-    cy.get('input[placeholder="Digite sua senha"]').type('admin123');
+    cy.get('input[placeholder="Digite sua senha"]').type('admin');
     cy.contains('button', 'ENTRAR').click();
     cy.wait('@loginRequest');
   });

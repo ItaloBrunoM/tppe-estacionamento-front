@@ -19,7 +19,7 @@ Cypress.Commands.add("loginComoAdmin", () => {
   cy.contains("h2", "Login").should("be.visible");
 
   cy.get('input[placeholder="Digite seu usuário"]').type("admin");
-  cy.get('input[placeholder="Digite sua senha"]').type("admin123");
+  cy.get('input[placeholder="Digite sua senha"]').type("admin");
   cy.contains("button", "ENTRAR").click();
 
   return cy.wait("@loginRequest").then((interception) => {

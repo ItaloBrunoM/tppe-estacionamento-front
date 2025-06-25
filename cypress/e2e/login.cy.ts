@@ -5,7 +5,7 @@ describe("Fluxo de Login e Logout", () => {
     cy.visit("/");
     cy.contains("button", "Entrar").click();
     cy.get('input[placeholder="Digite seu usuário"]').click().type("admin");
-    cy.get('input[placeholder="Digite sua senha"]').click().type("admin123");
+    cy.get('input[placeholder="Digite sua senha"]').click().type("admin");
     cy.contains("button", "ENTRAR").click();
 
     cy.contains("button", "admin").click();
