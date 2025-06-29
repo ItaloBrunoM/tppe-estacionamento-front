@@ -33,7 +33,7 @@ const ListaAcessos: React.FC<ListaAcessosProps> = ({
                   className="saidaButton"
                   disabled={isLoading}
                 >
-                  Registrar Saída {"->"}
+                  Registrar Saída
                 </button>
               </li>
             ))}
