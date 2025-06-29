@@ -153,7 +153,6 @@ const AcessoPage: React.FC = () => {
     <div className="pageContainer">
       <div className="estacionamento-selector-wrapper">
         <label htmlFor="estacionamento-select">Selecionar Estacionamento</label>{" "}
-        {/* Label idêntico ao EventoForm */}
         <select
           id="estacionamento-select"
           value={selectedEstacionamentoId || ""}

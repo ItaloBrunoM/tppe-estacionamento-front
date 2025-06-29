@@ -41,7 +41,7 @@ export function Sidebar({ isVisible }: SidebarProps) {
     <>
       <nav className={sidebarClassName}>
         <div className="sidebar-header">
-          <h3>ESTACIONAMENTO TOP</h3>
+          <h3>ARKA PARK</h3>
         </div>
         <div className="sidebar-links">
           <NavLink to="/" end className={getLinkClass}>

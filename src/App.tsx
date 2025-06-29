@@ -39,7 +39,7 @@ function PublicLayout() {
         onLoginClick={() => setIsLoginModalOpen(true)}
       />
       <main className="public-content">
-        <h1>Estacionamento TOP</h1>
+        <h1>ARKA PARK</h1>
         <p>Por favor, faça o login para acessar o sistema.</p>
       </main>
       {isLoginModalOpen && (
