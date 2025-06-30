@@ -10,6 +10,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: 390px; /* Ajuste esta altura máxima conforme o seu layout */
+  overflow-y: auto; /* Adiciona scroll vertical se o conteúdo exceder o max-height */
 }
 
 .acessos-list-container {
@@ -30,6 +32,7 @@
   border-radius: 4px;
   margin-bottom: 10px;
   display: flex;
+  flex-direction: row; /* Volta para row */
   justify-content: space-between;
   align-items: center;
   font-size: 1.1em;
@@ -39,6 +42,21 @@
 .listItem:last-child {
   margin-bottom: 0;
 }
+
+/* --- Novas classes para exibir as informações de acesso --- */
+.acesso-info {
+  display: flex;
+  flex-direction: column; /* Coloca Placa, Entrada, Saída em colunas */
+  gap: 5px; /* Espaçamento entre as linhas de informação */
+  flex-grow: 1; /* Permite que este bloco ocupe o espaço disponível */
+}
+
+.acesso-info span {
+  font-size: 0.9em; /* Tamanho da fonte para as informações de data/hora */
+  color: #f0f0f0; /* Uma cor um pouco mais clara para o texto */
+}
+/* --- Fim das novas classes --- */
+
 
 .saidaButton {
   background-color: #e57373;

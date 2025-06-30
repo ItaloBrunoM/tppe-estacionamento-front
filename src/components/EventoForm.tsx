@@ -58,6 +58,9 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
     setIsSubmitting(true);
     setError("");
 
+    // Validação de hora de fim posterior à hora de início
+    // Note: Esta validação simples não considera datas, apenas horas.
+    // Para validação de fuso horário, o backend é mais robusto.
     if (horaInicio && horaFim && horaFim <= horaInicio) {
       setError("A hora de fim deve ser posterior à hora de início.");
       setIsSubmitting(false);
@@ -70,11 +73,15 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
       return;
     }
 
+    // Combine data e hora em strings no formato ISO 8601 (YYYY-MM-DDTHH:MM:SS)
+    // Pydantic no backend irá parsear isso como datetime
+    const dataHoraInicio = `${dataEvento}T${horaInicio}:00`;
+    const dataHoraFim = `${dataEvento}T${horaFim}:00`;
+
     const data = {
       nome,
-      data_evento: dataEvento,
-      hora_inicio: horaInicio,
-      hora_fim: horaFim,
+      data_hora_inicio: dataHoraInicio, // Novo nome de campo e valor combinado
+      data_hora_fim: dataHoraFim,       // Novo nome de campo e valor combinado
       valor_acesso_unico: parseFloat(valorAcessoUnico) || 0,
       id_estacionamento: parseInt(idEstacionamento, 10),
     };
@@ -85,6 +92,9 @@ export function EventoForm({ onClose, onSuccess }: EventoFormProps) {
     } catch (err: any) {
       if (err.response && err.response.status === 409) {
         setError(err.response.data.detail);
+      } else if (err.response && err.response.data && err.response.data.detail) {
+        // Exibir mensagens de erro detalhadas do backend (ex: erros de validação Pydantic)
+        setError(JSON.stringify(err.response.data.detail));
       } else {
         setError("Erro ao criar o evento. Tente novamente.");
       }

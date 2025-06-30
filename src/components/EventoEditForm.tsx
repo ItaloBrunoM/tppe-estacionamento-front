@@ -15,13 +15,20 @@ export function EventoEditForm({
   onSuccess,
 }: EventoEditFormProps) {
   const [nome, setNome] = useState(evento.nome);
-  const [dataEvento, setDataEvento] = useState(evento.data_evento);
-  const [horaInicio, setHoraInicio] = useState(evento.hora_inicio);
-  const [horaFim, setHoraFim] = useState(evento.hora_fim);
+  // Inicializa a data e hora a partir da string ISO 8601
+  const [dataEvento, setDataEvento] = useState(
+    evento.data_hora_inicio ? evento.data_hora_inicio.substring(0, 10) : ""
+  );
+  const [horaInicio, setHoraInicio] = useState(
+    evento.data_hora_inicio ? evento.data_hora_inicio.substring(11, 16) : ""
+  );
+  const [horaFim, setHoraFim] = useState(
+    evento.data_hora_fim ? evento.data_hora_fim.substring(11, 16) : ""
+  );
   const [valorAcessoUnico, setValorAcessoUnico] = useState(
     String(evento.valor_acesso_unico || "")
   );
-  const [idEstacionamento] = useState(String(evento.id_estacionamento));
+  const [idEstacionamento] = useState(String(evento.id_estacionamento)); // idEstacionamento é readonly aqui, pode ser um problema se ele precisar ser editado
 
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,11 +62,14 @@ export function EventoEditForm({
       return;
     }
 
+    // Combine data e hora em strings no formato ISO 8601 (YYYY-MM-DDTHH:MM:SS)
+    const dataHoraInicio = `${dataEvento}T${horaInicio}:00`;
+    const dataHoraFim = `${dataEvento}T${horaFim}:00`;
+
     const dataToUpdate = {
       nome,
-      data_evento: dataEvento,
-      hora_inicio: horaInicio,
-      hora_fim: horaFim,
+      data_hora_inicio: dataHoraInicio, // Novo nome de campo e valor combinado
+      data_hora_fim: dataHoraFim,       // Novo nome de campo e valor combinado
       valor_acesso_unico: parseFloat(valorAcessoUnico) || null,
       id_estacionamento: parseInt(idEstacionamento, 10),
     };
@@ -67,9 +77,14 @@ export function EventoEditForm({
     try {
       await api.put(`/eventos/${evento.id}`, dataToUpdate);
       onSuccess();
-    } catch (err) {
-      setError("Erro ao atualizar o evento. Tente novamente.");
-      console.error(err);
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.detail) {
+        // Exibir mensagens de erro detalhadas do backend
+        setError(JSON.stringify(err.response.data.detail));
+      } else {
+        setError("Erro ao atualizar o evento. Tente novamente.");
+        console.error(err);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -81,7 +96,6 @@ export function EventoEditForm({
         <h2>Editar Evento</h2>
         <div className="modal-scroll-container">
           <form onSubmit={handleSubmit}>
-
             <label>Nome do Evento</label>
             <input
               type="text"

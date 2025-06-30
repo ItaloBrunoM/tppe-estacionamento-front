@@ -8,14 +8,14 @@ import { ConfirmModal } from "../components/ConfirmModal";
 export interface EventoType {
   id: number;
   nome: string;
-  data_evento: string;
-  hora_inicio: string;
-  hora_fim: string;
+  // Propriedades atualizadas para corresponder ao backend
+  data_hora_inicio: string; 
+  data_hora_fim: string;
   valor_acesso_unico: number | null;
   id_estacionamento: number;
 }
 
-export function EventoPage() {
+export function EventoPage({ estacionamentoId }: { estacionamentoId: number }) {
   const [eventos, setEventos] = useState<EventoType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +29,7 @@ export function EventoPage() {
   const fetchEventos = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get("/eventos/");
+      const response = await api.get(`/eventos/estacionamento/${estacionamentoId}`);
       setEventos(response.data);
     } catch (error) {
       console.error("Erro ao buscar eventos:", error);
@@ -39,8 +39,10 @@ export function EventoPage() {
   };
 
   useEffect(() => {
-    fetchEventos();
-  }, []);
+    if (estacionamentoId) {
+      fetchEventos();
+    }
+  }, [estacionamentoId]);
 
   const handleFormSuccess = () => {
     setIsCreateModalOpen(false);
@@ -109,4 +111,4 @@ export function EventoPage() {
       )}
     </div>
   );
-}
+} 

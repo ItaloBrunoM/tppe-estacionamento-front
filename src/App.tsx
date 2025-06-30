@@ -71,6 +71,12 @@ function ProtectedLayout() {
     currentPageTitle = "Acesso";
   }
 
+  // >>> INÍCIO DA ALTERAÇÃO <<<
+  // ATENÇÃO: SUBSTITUA '1' PELO ID DE UM ESTACIONAMENTO VÁLIDO DO SEU BANCO DE DADOS PARA TESTE.
+  // Em uma aplicação real, esse ID viria de uma seleção do usuário, do contexto, ou de parâmetros de rota.
+  const estacionamentoIdParaEventoPage = 1; 
+  // >>> FIM DA ALTERAÇÃO <<<
+
   return (
     <div className="app-layout">
       <Sidebar isVisible={isSidebarVisible} />
@@ -82,7 +88,7 @@ function ProtectedLayout() {
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
-            <Route path="/eventos" element={<EventoPage />} />
+            <Route path="/eventos" element={<EventoPage estacionamentoId={estacionamentoIdParaEventoPage} />} />
             <Route path="/acesso" element={<AcessoPage />} />
             <Route path="/usuarios" element={<UsersPage />} />
             <Route path="*" element={<Navigate to="/" />} />

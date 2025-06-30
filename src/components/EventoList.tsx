@@ -14,6 +14,43 @@ export function EventoList({
   onDeleteItemClick,
   onEditClick,
 }: EventoListProps) {
+  const formatDateTimeLocal = (isoString: string) => {
+    if (!isoString) return "";
+    const date = new Date(isoString + 'Z'); 
+    
+    if (isNaN(date.getTime())) {
+      return "Data Inválida";
+    }
+
+    const formatter = new Intl.DateTimeFormat("pt-BR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "America/Sao_Paulo",
+    });
+    return formatter.format(date);
+  };
+
+  const formatTimeLocal = (isoString: string) => {
+    if (!isoString) return "";
+    const date = new Date(isoString + 'Z'); 
+    
+    if (isNaN(date.getTime())) {
+      return "Hora Inválida";
+    }
+
+    const formatter = new Intl.DateTimeFormat("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "America/Sao_Paulo",
+    });
+    return formatter.format(date);
+  };
+
   return (
     <>
       <div
@@ -46,7 +83,7 @@ export function EventoList({
             <div className="item-info">
               <span className="item-name">{evento.nome}</span>
               <span className="item-detail">
-                {` |  Ocorrerá em ${new Date(evento.data_evento).toLocaleDateString("pt-BR", { timeZone: "UTC" })} das ${evento.hora_inicio} às ${evento.hora_fim}`}
+                {` | Ocorrerá em ${formatDateTimeLocal(evento.data_hora_inicio).split(' ')[0]} das ${formatTimeLocal(evento.data_hora_inicio)} às ${formatTimeLocal(evento.data_hora_fim)}`}
               </span>
             </div>
 

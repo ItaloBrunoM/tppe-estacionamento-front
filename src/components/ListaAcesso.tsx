@@ -1,3 +1,5 @@
+// src/components/ListaAcessos.tsx
+
 import React from "react";
 import { Acesso } from "../types/acesso";
 import "./ListaAcesso.css";
@@ -15,6 +17,16 @@ const ListaAcessos: React.FC<ListaAcessosProps> = ({
 }) => {
   const acessosAtivos = acessos.filter((acesso) => !acesso.hora_saida);
 
+  // Função auxiliar para formatar a data e hora
+  const formatDateTime = (dateTimeString: string | null) => {
+    if (!dateTimeString) return "N/A";
+    // Criamos um objeto Date a partir da string UTC
+    const date = new Date(dateTimeString);
+    // Usamos toLocaleString para formatar para o fuso horário local do usuário
+    // e para o formato de data/hora comum
+    return date.toLocaleString();
+  };
+
   return (
     <div className="card">
       <h3>Lista de Acessos</h3>
@@ -27,7 +39,13 @@ const ListaAcessos: React.FC<ListaAcessosProps> = ({
           <ul className="list">
             {acessosAtivos.map((acesso) => (
               <li key={acesso.id} className="listItem">
-                <span>{acesso.placa}</span>
+                <div className="acesso-info"> {/* Div para agrupar as infos do acesso */}
+                  <span>Placa: {acesso.placa}</span>
+                  <span>Entrada: {formatDateTime(acesso.hora_entrada)}</span>
+                  {acesso.hora_saida && (
+                    <span>Saída: {formatDateTime(acesso.hora_saida)}</span>
+                  )}
+                </div>
                 <button
                   onClick={() => onRegistrarSaida(acesso.id)}
                   className="saidaButton"
