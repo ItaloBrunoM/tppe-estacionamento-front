@@ -1,0 +1,31 @@
+.metric-card {
+    background-color: #5270b1;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
+  }
+  
+  .metric-card h3 {
+    font-size: 1.2em;
+    color: #050505;
+    margin-bottom: 10px;
+  }
+  
+  .metric-card p {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #f0f0f0;
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .metric-card span {
+    font-size: 0.85em;
+    color: #b3abab;
+    margin-top: 5px;
+  }

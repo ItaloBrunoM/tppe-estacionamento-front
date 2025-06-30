@@ -13,6 +13,7 @@ import { EstacionamentoPage } from "./pages/EstacionamentoPage";
 import { EventoPage } from "./pages/EventoPage";
 import { UsersPage } from "./pages/UsersPage";
 import AcessoPage from "./pages/AcessoPage";
+import { DashboardPage } from "./pages/DashboardPage";
 import { LoginModal } from "./components/LoginModal";
 import "./App.css";
 
@@ -70,10 +71,6 @@ function ProtectedLayout() {
     currentPageTitle = "Acesso";
   }
 
-  function DashboardPlaceholder() {
-    return <div>Bem-vindo à Visão Geral!</div>;
-  }
-
   return (
     <div className="app-layout">
       <Sidebar isVisible={isSidebarVisible} />
@@ -83,7 +80,7 @@ function ProtectedLayout() {
         <Topbar title={currentPageTitle} onMenuClick={toggleSidebar} />
         <main className="content-area">
           <Routes>
-            <Route path="/" element={<DashboardPlaceholder />} />
+            <Route path="/" element={<DashboardPage />} />
             <Route path="/estacionamentos" element={<EstacionamentoPage />} />
             <Route path="/eventos" element={<EventoPage />} />
             <Route path="/acesso" element={<AcessoPage />} />

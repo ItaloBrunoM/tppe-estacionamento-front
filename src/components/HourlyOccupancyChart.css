@@ -1,0 +1,63 @@
+.hourly-chart-container {
+  padding: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  text-align: center;
+}
+
+.hourly-chart {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-bottom: 1px solid #eee;
+  padding: 35px 10px 10px;
+  gap: 15px;
+  overflow-x: auto;
+  overflow-y: visible;
+  min-height: 180px;
+}
+
+.hourly-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 30px;
+}
+
+.hourly-bar {
+  background-color: #007bff;
+  width: 25px;
+  border-radius: 5px 5px 0 0;
+  transition: height 0.3s ease-in-out;
+  position: relative;
+}
+
+.bar-value {
+  color: white;
+  font-size: 0.7em;
+  font-weight: bold;
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 4px;
+  border-radius: 3px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.hourly-label {
+  font-size: 0.8em;
+  color: #777;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .hourly-chart {
+    justify-content: flex-start;
+  }
+}
